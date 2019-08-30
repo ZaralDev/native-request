@@ -1,7 +1,7 @@
 # Native Request
 
 
-Native Request is a simple module that makes you create native node.js requests supports https .
+Native Request is a simple module that makes you create native node.js requests supports https.
 
   - supports HTTPS
   - 0 dependencies
