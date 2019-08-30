@@ -13,7 +13,7 @@ function getProtocol(path) {
  * Send a get request
  * @param path is the url endpoint
  * @param headers of the request
- * @param callback contains (error, statusCode, data)
+ * @param callback contains (error, body, status, headers)
  */
  function get(path, headers, callback) {
 
@@ -36,8 +36,8 @@ function getProtocol(path) {
  * Send a post request
  * @param path is the url endpoint
  * @param headers of the request
- * @param callback contains (error, statusCode, data)
- * @param data contains the data :)
+ * @param callback contains (error, body, status, headers)
+ * @param data a JSON Object or a string
  */
  function post(path, data,headers, callback) {
  	request(path, "POST", data,headers , callback);
@@ -48,7 +48,7 @@ function getProtocol(path) {
  * @param path is the url endpoint
  * @param headers of the request
  * @param callback contains (error, statusCode, data)
- * @param data contains the data :)
+ * @param data a JSON Object or a string
  * @param method is the protocol used like POST GET DELETE PUT etc...
  */
  function request(path, method, data, headers = '', callback) {
@@ -92,8 +92,6 @@ function handleResponse(response, callback) {
 		body += d;
 	});
 	response.on('end', function () {
-        // Data reception is done, do whatever with it!
-       // let parsed = JSON.parse(body);
         callback(hasError ? body : null, hasError ? null : body, response.statusCode, response.headers);
     });
 }
