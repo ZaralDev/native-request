@@ -1,14 +1,13 @@
 `use strict`
 
-let http = require('http');
-let https = require('https');
+const http = require('http');
+const https = require('https');
 const url = require('url');
 
-
 function getProtocol(path) {
-	let protocol = url.parse(path).protocol;
-	return protocol === "http:" ? http : https;
+	return url.parse(path).protocol === "http:" ? http : https;
 }
+
 /**
  * Send a get request
  * @param path is the url endpoint
@@ -16,20 +15,7 @@ function getProtocol(path) {
  * @param callback contains (error, body, status, headers)
  */
  function get(path, headers, callback) {
-
  	request(path, "GET", null, headers, callback);
-
-/* 	getProtocol(path).get(path, headers, function (response) {
-	 	console.log("Hi");
-
- 		handleResponse(response, callback);
-
- 	}).on('error', function (error) {
- 		callback(true, 404);
- 		console.error(error);
- 	});*/
-
-
  }
 
 /**
@@ -39,8 +25,8 @@ function getProtocol(path) {
  * @param callback contains (error, body, status, headers)
  * @param data a JSON Object or a string
  */
- function post(path, data,headers, callback) {
- 	request(path, "POST", data,headers , callback);
+ function post(path, data, headers, callback) {
+ 	request(path, "POST", data, headers, callback);
  }
 
 /**
@@ -54,13 +40,13 @@ function getProtocol(path) {
  function request(path, method, data, headers = '', callback) {
  	if (typeof data === 'function') {
  		callback = data;
- 		data = ''
+ 		data = '';
  	} else if (typeof headers === 'function') {
  		callback = headers;
  		headers = {};
  	} 
  	const postData = typeof data === "object" ? JSON.stringify(data) : data;
- 	let parsedUrl = url.parse(path);
+ 	const parsedUrl = url.parse(path);
  	const options = {
  		hostname: parsedUrl.hostname,
  		port: parsedUrl.port,
@@ -71,29 +57,26 @@ function getProtocol(path) {
  	const req = getProtocol(path).request(options, function (response) {
  		handleResponse(response, callback);
  	});
-
  	req.on('error', function (error) {
  		callback(error);
  		console.error(error);
  	});
-
 	// Write data to request body
 	req.write(postData);
 	req.end();
 }
 
-
 function handleResponse(response, callback) {
 	let body = '';
-	let status = response.statusCode;
-	let hasError = status >= 300;
+	const status = response.statusCode;
+	const hasError = status >= 300;
 	response.setEncoding('utf8');
-	response.on('data', function (d) {
-		body += d;
+	response.on('data', function (data) {
+		body += data;
 	});
 	response.on('end', function () {
-        callback(hasError ? body : null, hasError ? null : body, response.statusCode, response.headers);
-    });
+        	callback(hasError ? body : null, hasError ? null : body, response.statusCode, response.headers);
+    	});
 }
 
 module.exports = {
