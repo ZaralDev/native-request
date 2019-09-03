@@ -52,7 +52,7 @@ function getProtocol(path) {
  		port: parsedUrl.port,
  		path: parsedUrl.pathname,
  		method: method,
- 		...headers
+ 		headers: headers
  	};
  	const req = getProtocol(path).request(options, function (response) {
  		handleResponse(response, callback);
