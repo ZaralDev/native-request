@@ -62,7 +62,8 @@ function getProtocol(path) {
  		console.error(error);
  	});
 	// Write data to request body
-	req.write(postData);
+	if (method !== "GET")
+		req.write(postData);
 	req.end();
 }
 
@@ -75,8 +76,8 @@ function handleResponse(response, callback) {
 		body += data;
 	});
 	response.on('end', function () {
-        	callback(hasError ? body : null, hasError ? null : body, response.statusCode, response.headers);
-    	});
+		callback(hasError ? body : null, hasError ? null : body, response.statusCode, response.headers);
+	});
 }
 
 module.exports = {
