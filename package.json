@@ -1,11 +1,11 @@
 {
 	"name": "native-request",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"author": {
 		"name": "Samuel Marchese",
 		"email": "contact@zaral.fr",
 		"url": "https://zaral.fr"
-	},	
+	},
 	"bugs": {
 		"url": "https://github.com/ZaralDev/node-request/issues"
 	},

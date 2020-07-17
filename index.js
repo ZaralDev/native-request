@@ -50,8 +50,8 @@ function getProtocol(path) {
  	const options = {
  		hostname: parsedUrl.hostname,
  		port: parsedUrl.port,
- 		path: parsedUrl.pathname,
- 		method: method,
+ 		path: parsedUrl.pathname +  (!!parsedUrl.search ? parsedUrl.search : ''),
+  		method: method,
  		headers: headers
  	};
  	const req = getProtocol(path).request(options, function (response) {

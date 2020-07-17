@@ -15,7 +15,7 @@ describe('/GET', function () {
 
 	describe('/', function () {
 		it('should return 200', function (done) {
-			request.get('http://localhost:8000/', function(err, data, status, headers) {
+			request.get('http://localhost:8000/?hey=d', function(err, data, status, headers) {
 				assert.ifError(err);
 				assert.equal(200, status);
 				done();
@@ -31,7 +31,7 @@ describe('/GET', function () {
 		});	
 
 		it("should have content-type to 'text/plain'", function (done) {
-			request.get("http://localhost:8000", function(err, data, status, headers) {
+			request.get("http://localhost:8000",function(err, data, status, headers) {
 				assert.ifError(err);
 				assert.equal('text/plain' , headers['content-type']);
 				done();
