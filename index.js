@@ -1,83 +1,62 @@
 `use strict`
-
-const http = require('http');
-const https = require('https');
-const url = require('url');
-
-function getProtocol(path) {
-	return url.parse(path).protocol === "http:" ? http : https;
-}
+const Request = require('./lib/Request');
 
 /**
  * Send a get request
+ * @return a @Request object
  * @param path is the url endpoint
  * @param headers of the request
  * @param callback contains (error, body, status, headers)
  */
 function get(path, headers, callback) {
- 	request(path, "GET", null, headers, callback);
+ 	const request = new Request();
+ 	request.createRequest(path, "GET", null, headers, callback);
+
+ 	request.sendRequest();
+
+ 	return request;
 }
 
 /**
  * Send a post request
+ * @return a @Request object
  * @param path is the url endpoint
  * @param headers of the request
  * @param callback contains (error, body, status, headers)
  * @param data a JSON Object or a string
  */
 function post(path, data, headers, callback) {
- 	request(path, "POST", data, headers, callback);
+ 	const request = new Request();
+ 	request.createRequest(path, "POST", data, headers, callback);
+
+ 	request.sendRequest();
+
+ 	return request;
 }
+
 
 /**
- * Send a custom request
+ * Send a post request
+ * @return a @Request object
  * @param path is the url endpoint
  * @param headers of the request
- * @param callback contains (error, statusCode, data)
+ * @param callback contains (error, body, status, headers)
  * @param data a JSON Object or a string
- * @param method is the protocol used like POST GET DELETE PUT etc...
+ * @param requestOptions a JSON Object or a string
  */
-function request(path, method, data, headers = '', callback) {
- 	if (typeof data === 'function') {
- 		callback = data;
- 		data = '';
- 	} else if (typeof headers === 'function') {
- 		callback = headers;
- 		headers = {};
- 	}
- 	const postData = typeof data === "object" ? JSON.stringify(data) : data;
- 	const parsedUrl = url.parse(path);
- 	const options = {
- 		hostname: parsedUrl.hostname,
- 		port: parsedUrl.port,
- 		path: parsedUrl.pathname + (!!parsedUrl.search ? parsedUrl.search : ''),
-  		method: method,
- 		headers: headers
- 	};
- 	const req = getProtocol(path).request(options, function(response) {
- 		handleResponse(response, callback);
- 	});
- 	req.on('error', function(error) {
- 		callback(error);
- 	});
-	// Write data to request body
-	if (method !== "GET")
-		req.write(postData);
-	req.end();
+function request(options, callback) {
+
+ 	const request = new Request();
+ 	request.createRequest(options.url, options.method, options.data || {}, options.headers || {}, options.requestOptions, callback);
+
+ 	request.setCookies(options.Cookies);
+ 	request.sendRequest();
+
+ 	return request;
 }
 
-function handleResponse(response, callback) {
-	let body = '';
-	const status = response.statusCode;
-	const hasError = status >= 300;
-	response.setEncoding('utf8');
-	response.on('data', function(data) {
-		body += data;
-	});
-	response.on('end', function() {
-		callback(hasError ? body : null, hasError ? null : body, response.statusCode, response.headers);
-	});
-}
+
+
 
 module.exports = {
 	get,
