@@ -16,9 +16,6 @@ Native Request is a simple module that makes you create native node.js requests 
 ## Table of Contents  
 [Installation](#installation)  
 [Usage](#usage)
-[Planned features](#planned_features)
-
-
 
 ## Planned features
 
