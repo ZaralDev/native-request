@@ -1,5 +1,5 @@
 # Native Request
-[![npm version](https://badge.fury.io/js/native-request.svg)](https://badge.fury.io/js/native-request) ![npm](https://img.shields.io/npm/dm/native-request)
+[![npm version](https://badge.fury.io/js/native-request.svg)](https://badge.fury.io/js/native-request)  ![npm](https://img.shields.io/npm/dm/native-request)
 
 ### v1.1 has been released
 
